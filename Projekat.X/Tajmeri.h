@@ -1,0 +1,29 @@
+// -*- C++ -*-
+/* 
+ * File:   Tajmeri.h
+ * Author: Milan
+ *
+ * Created on November 8, 2017, 10:48 PM
+ */
+
+#ifndef TIMER_H
+#define TIMER_H
+
+#include <p30fxxxx.h>
+
+#include <stdbool.h>
+
+// Resetuj timer za unos
+void timer_reset();
+
+// Da li je istekao timer za unos
+bool timer_blew();
+
+// Daj trenutno vreme u milisekundama
+// (Korisno zarad dobijanja periode za upravljanje servo motora)
+unsigned int timer_ms();
+
+// Inicijalizacija timera 2 (Timer 1 se ne koristi)
+void timer_init_2(void);
+
+#endif
