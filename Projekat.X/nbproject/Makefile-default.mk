@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=adc.c driverGLCD.c unos_sifre.c main.c otvorena_garaza.c lcd.c touchscreen.c uart.c zatvorena_garaza.c alarm.c Tajmeri.c
+SOURCEFILES_QUOTED_IF_SPACED=adc.c driverGLCD.c unos_sifre.c main.c otvorena_garaza.c lcd.c touchscreen.c uart.c zatvorena_garaza.c alarm.c timer.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/adc.o ${OBJECTDIR}/driverGLCD.o ${OBJECTDIR}/unos_sifre.o ${OBJECTDIR}/main.o ${OBJECTDIR}/otvorena_garaza.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/touchscreen.o ${OBJECTDIR}/uart.o ${OBJECTDIR}/zatvorena_garaza.o ${OBJECTDIR}/alarm.o ${OBJECTDIR}/Tajmeri.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/adc.o.d ${OBJECTDIR}/driverGLCD.o.d ${OBJECTDIR}/unos_sifre.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/otvorena_garaza.o.d ${OBJECTDIR}/lcd.o.d ${OBJECTDIR}/touchscreen.o.d ${OBJECTDIR}/uart.o.d ${OBJECTDIR}/zatvorena_garaza.o.d ${OBJECTDIR}/alarm.o.d ${OBJECTDIR}/Tajmeri.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/adc.o ${OBJECTDIR}/driverGLCD.o ${OBJECTDIR}/unos_sifre.o ${OBJECTDIR}/main.o ${OBJECTDIR}/otvorena_garaza.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/touchscreen.o ${OBJECTDIR}/uart.o ${OBJECTDIR}/zatvorena_garaza.o ${OBJECTDIR}/alarm.o ${OBJECTDIR}/timer.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/adc.o.d ${OBJECTDIR}/driverGLCD.o.d ${OBJECTDIR}/unos_sifre.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/otvorena_garaza.o.d ${OBJECTDIR}/lcd.o.d ${OBJECTDIR}/touchscreen.o.d ${OBJECTDIR}/uart.o.d ${OBJECTDIR}/zatvorena_garaza.o.d ${OBJECTDIR}/alarm.o.d ${OBJECTDIR}/timer.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/adc.o ${OBJECTDIR}/driverGLCD.o ${OBJECTDIR}/unos_sifre.o ${OBJECTDIR}/main.o ${OBJECTDIR}/otvorena_garaza.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/touchscreen.o ${OBJECTDIR}/uart.o ${OBJECTDIR}/zatvorena_garaza.o ${OBJECTDIR}/alarm.o ${OBJECTDIR}/Tajmeri.o
+OBJECTFILES=${OBJECTDIR}/adc.o ${OBJECTDIR}/driverGLCD.o ${OBJECTDIR}/unos_sifre.o ${OBJECTDIR}/main.o ${OBJECTDIR}/otvorena_garaza.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/touchscreen.o ${OBJECTDIR}/uart.o ${OBJECTDIR}/zatvorena_garaza.o ${OBJECTDIR}/alarm.o ${OBJECTDIR}/timer.o
 
 # Source Files
-SOURCEFILES=adc.c driverGLCD.c unos_sifre.c main.c otvorena_garaza.c lcd.c touchscreen.c uart.c zatvorena_garaza.c alarm.c Tajmeri.c
+SOURCEFILES=adc.c driverGLCD.c unos_sifre.c main.c otvorena_garaza.c lcd.c touchscreen.c uart.c zatvorena_garaza.c alarm.c timer.c
 
 
 
@@ -165,12 +165,12 @@ ${OBJECTDIR}/alarm.o: alarm.c  nbproject/Makefile-${CND_CONF}.mk
 	${MP_CC} $(MP_EXTRA_CC_PRE)  alarm.c  -o ${OBJECTDIR}/alarm.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/alarm.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1    -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off   
 	@${FIXDEPS} "${OBJECTDIR}/alarm.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
-${OBJECTDIR}/Tajmeri.o: Tajmeri.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/timer.o: timer.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/Tajmeri.o.d 
-	@${RM} ${OBJECTDIR}/Tajmeri.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  Tajmeri.c  -o ${OBJECTDIR}/Tajmeri.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Tajmeri.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1    -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off   
-	@${FIXDEPS} "${OBJECTDIR}/Tajmeri.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	@${RM} ${OBJECTDIR}/timer.o.d 
+	@${RM} ${OBJECTDIR}/timer.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  timer.c  -o ${OBJECTDIR}/timer.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/timer.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1    -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off   
+	@${FIXDEPS} "${OBJECTDIR}/timer.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 else
 ${OBJECTDIR}/adc.o: adc.c  nbproject/Makefile-${CND_CONF}.mk
@@ -243,12 +243,12 @@ ${OBJECTDIR}/alarm.o: alarm.c  nbproject/Makefile-${CND_CONF}.mk
 	${MP_CC} $(MP_EXTRA_CC_PRE)  alarm.c  -o ${OBJECTDIR}/alarm.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/alarm.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off   
 	@${FIXDEPS} "${OBJECTDIR}/alarm.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
-${OBJECTDIR}/Tajmeri.o: Tajmeri.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/timer.o: timer.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/Tajmeri.o.d 
-	@${RM} ${OBJECTDIR}/Tajmeri.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  Tajmeri.c  -o ${OBJECTDIR}/Tajmeri.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/Tajmeri.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off   
-	@${FIXDEPS} "${OBJECTDIR}/Tajmeri.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	@${RM} ${OBJECTDIR}/timer.o.d 
+	@${RM} ${OBJECTDIR}/timer.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  timer.c  -o ${OBJECTDIR}/timer.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/timer.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off   
+	@${FIXDEPS} "${OBJECTDIR}/timer.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
 

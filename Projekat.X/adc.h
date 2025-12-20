@@ -1,6 +1,7 @@
 #ifndef ADC_H
 #define ADC_H
 #include<p30fxxxx.h>
+#include <stdbool.h>
 
 // touchscreen driver koristi ove kako bi odredio poziciju dodira
 extern unsigned int sirovi0,sirovi1;
@@ -10,5 +11,7 @@ void ConfigureADCPins(void);
 
 // Podesi ADC
 void ADCinit(void);
+
+bool poll_light_sensor(void);
 
 #endif

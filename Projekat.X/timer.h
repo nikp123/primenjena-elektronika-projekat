@@ -26,4 +26,7 @@ unsigned int timer_ms();
 // Inicijalizacija timera 2 (Timer 1 se ne koristi)
 void timer_init_2(void);
 
+// delay funkcija, vreme nije precizno, blokira kretanje koda
+void Delay(unsigned int N);
+
 #endif

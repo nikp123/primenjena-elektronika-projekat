@@ -33,6 +33,10 @@ extern void unos_sifre_init();
 // provera da li je unos tacna sifra
 extern bool unos_sifre_is_correct();
 
+// U slucaju da je sifra unesena preko drugih nacina
+// prepisi njen memorijski sadrzaj
+extern void unos_sifre_override(char *a);
+
 #ifdef	__cplusplus
 }
 #endif

@@ -3,11 +3,10 @@
 
 #include <stdint.h>
 #include <p30fxxxx.h>
-#include "tajmeri.h"
 
 #include "alarm.h"
 
-#define TMR2_period 1000 /*  Fosc = 10MHz,
+#define TMR2_period 10000 /*  Fosc = 10MHz,
 					       1/Fosc = 1us !!!, 1us * 1000 = 1ms  */
 
 uint16_t brojac_ms;
@@ -30,7 +29,7 @@ void timer_init_2(void)
 }
 
 
-void __attribute__ ((__interrupt__)) _T2Interrupt(void) // svakih 1ms
+void __attribute__((__interrupt__, no_auto_psv)) _T2Interrupt(void) // svakih 1ms
 {
     TMR2 = 0; // Resetuj brojac
 
@@ -66,6 +65,11 @@ bool timer_blew() {
 
 unsigned int timer_ms() {
     return brojac_ms;
+}
+
+void Delay(unsigned int N) {
+	unsigned int i;
+	for(i=0;i<N;i++);
 }
 
 //---------------------------------------

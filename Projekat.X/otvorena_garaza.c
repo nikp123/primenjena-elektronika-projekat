@@ -10,7 +10,7 @@
 #include <stdint.h>
 
 #include "lcd.h"
-#include "Tajmeri.h"
+#include "timer.h"
 #include "touchscreen.h"
 
 static const uint8_t unlock[]  = {

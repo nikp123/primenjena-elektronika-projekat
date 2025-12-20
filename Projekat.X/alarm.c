@@ -4,7 +4,7 @@
 #include "touchscreen.h"
 
 #include "alarm.h"
-#include "Tajmeri.h"
+#include "timer.h"
 
 #include <stdbool.h>
 

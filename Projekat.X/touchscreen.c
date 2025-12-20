@@ -14,6 +14,7 @@
 #endif
 
 #include "adc.h"
+#include "timer.h"
 #include "touchscreen.h"
 
 //#define DRIVE_A PORTBbits.RB10
@@ -32,12 +33,6 @@ void touchscreen_configure_pins(void)
 	
 	//LATCbits.LATC14=0;
 	//LATCbits.LATC13=0;
-}
-
-void Delay(unsigned int N)
-{
-	unsigned int i;
-	for(i=0;i<N;i++);
 }
 
 void touchscreen_coords(unsigned int *X, unsigned int *Y) {

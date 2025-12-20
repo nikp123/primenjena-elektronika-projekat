@@ -1,7 +1,7 @@
 #include <stdbool.h>
 
 #include "lcd.h"
-#include "Tajmeri.h"
+#include "timer.h"
 #include "touchscreen.h"
 
 // array size is 1024

@@ -1,15 +1,19 @@
 #include<p30fxxxx.h>
 
 #include "adc.h"
+#include "uart.h"
+#include "timer.h"
 
 // Globalne promenjive
 unsigned int sirovi0,sirovi1;
 
 void ConfigureADCPins(void) {
-	//ADPCFGbits.PCFG6=0;
-	ADPCFGbits.PCFG8=0;
-	ADPCFGbits.PCFG9=0;
-	
+	ADPCFGbits.PCFG6 = 0; // Senzor svetla (RB6)
+    ADPCFGbits.PCFG7 = 1; // B7 nije analogni ulaz
+    ADPCFGbits.PCFG8 = 0; // Touch X
+	ADPCFGbits.PCFG9 = 0; // Touch Y
+    ADPCFGbits.PCFG11 = 1; // B11 nije analogni ulaz
+    
 	//TRISBbits.TRISB6=1;
 	TRISBbits.TRISB8=1;
 	TRISBbits.TRISB9=1;
@@ -184,8 +188,32 @@ bit 15-0 CSSL<15:0>: A/D Input Pin Scan Selection bits
 	IEC0bits.ADIE=1;
 }
 
+bool poll_light_sensor(void) {
+    ADCSSL=0b0000000001000000; // iskljuci touchscreen, ukljuci senzor
+	ADCON1bits.ASAM=1;
+
+	IFS0bits.ADIF=1;
+	IEC0bits.ADIE=1;
+    
+    // Cekamo ADC da odradi prevod vrednosti
+    // Pulldown otpornik, pullup senzor
+	Delay(500);
+    // iscitaj vrednost i proveri ako je preko granice
+    if(sirovi0 > 1000) {
+        return true;
+    }
+    
+    ADCSSL=0b0000001100000000; // iskljuci senzor, ukljuci touch 
+	ADCON1bits.ASAM=1;
+
+	IFS0bits.ADIF=1;
+	IEC0bits.ADIE=1;
+    
+    return false;
+}
+
 // Prekidna rutina za ADC
-void __attribute__((__interrupt__)) _ADCInterrupt(void) {
+void __attribute__((__interrupt__, no_auto_psv)) _ADCInterrupt(void) {
 	sirovi0=ADCBUF0;//0
 	sirovi1=ADCBUF1;//1
     

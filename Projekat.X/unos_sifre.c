@@ -227,6 +227,12 @@ void unos_sifre_init() {
     unos_sifre_clear();  // Brise se trenutni unos sifre
 }
 
+void unos_sifre_override(char *a) {
+    // Ogranici prenos sifre do samo 4 karaktera
+    // Jer bez ove provere haker moze da korupira memoriju
+    strncpy(unos, a, 4);
+}
+
 bool unos_sifre_is_correct() {
     if(!strncmp(unos, sifra, 4)) {
         alarm_disarm(); // Gasi se odbrojavanje ako je sifra tacna
@@ -247,7 +253,11 @@ bool unos_sifre(void) {
     if (touchscreen_bound_hit(BUTTON_ENTER, X, Y)){        
         // Ako su sva cetri karaktera unesena i korisnik potvrdjuje unos,
         // mozemo da smatramo da je unos zavrsen
-        if(unos_ptr == 4) return true;
+        if(unos_ptr == 4) {
+            uart1_writeln("Sifra unesena");
+            uart1_writeln(unos);
+            return true;
+        }
     }
 
     // Proveravamo i izvrsavamo unos karaktera

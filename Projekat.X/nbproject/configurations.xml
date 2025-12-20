@@ -14,7 +14,7 @@
       <itemPath>otvorena_garaza.h</itemPath>
       <itemPath>zatvorena_garaza.h</itemPath>
       <itemPath>alarm.h</itemPath>
-      <itemPath>Tajmeri.h</itemPath>
+      <itemPath>timer.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -33,7 +33,7 @@
       <itemPath>uart.c</itemPath>
       <itemPath>zatvorena_garaza.c</itemPath>
       <itemPath>alarm.c</itemPath>
-      <itemPath>Tajmeri.c</itemPath>
+      <itemPath>timer.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
