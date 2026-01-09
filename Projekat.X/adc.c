@@ -1,22 +1,24 @@
 #include<p30fxxxx.h>
+#include <stdint.h>
 
 #include "adc.h"
 #include "uart.h"
 #include "timer.h"
 
 // Globalne promenjive
-unsigned int sirovi0,sirovi1;
+uint16_t sirovi0,sirovi1;
 
 void ConfigureADCPins(void) {
-	ADPCFGbits.PCFG6 = 0; // Senzor svetla (RB6)
+    ADPCFGbits.PCFG6 = 0; // Senzor svetla (RB6)
     ADPCFGbits.PCFG7 = 1; // B7 nije analogni ulaz
     ADPCFGbits.PCFG8 = 0; // Touch X
-	ADPCFGbits.PCFG9 = 0; // Touch Y
+    ADPCFGbits.PCFG9 = 0; // Touch Y
     ADPCFGbits.PCFG11 = 1; // B11 nije analogni ulaz
-    
-	//TRISBbits.TRISB6=1;
-	TRISBbits.TRISB8=1;
-	TRISBbits.TRISB9=1;
+
+    // Podesiti analogne ulaze kao ulaze
+    TRISBbits.TRISB6=1;
+    TRISBbits.TRISB8=1;
+    TRISBbits.TRISB9=1;
 }
 
 void ADCinit(void) {
@@ -60,12 +62,10 @@ bit 0 DONE: A/D Conversion Status bit
 	Clearing this bit will not effect any operation in progress.
 	Cleared by software or start of a new conversion.*/
 
-	ADCON1bits.ADSIDL=0;
-	ADCON1bits.FORM=0;
-	ADCON1bits.SSRC=7;
-	//na kraju  ADCON1bits.ASAM=1;
-	ADCON1bits.SAMP=1;
-	//ADCON1bits.ADON=1;      //ovo na kraju
+    ADCON1bits.ADSIDL=0;
+    ADCON1bits.FORM=0;
+    ADCON1bits.SSRC=7;
+    ADCON1bits.SAMP=1;
 
 /*
 ADCON2:
@@ -111,11 +111,11 @@ bit 0 ALTS: Alternate Input Sample Mode Select bit
 	1 = Uses MUX A input multiplexer settings for first sample, then alternate between MUX B and MUX A input
 	multiplexer settings for all subsequent samples
 	0 = Always use MUX A input multiplexer settings*/
-	ADCON2bits.VCFG=7;
-	ADCON2bits.CSCNA=1;
-	ADCON2bits.SMPI=1;
-	ADCON2bits.BUFM=0;
-	ADCON2bits.ALTS=0;
+    ADCON2bits.VCFG=7;
+    ADCON2bits.CSCNA=1; // Skeniraj ADC pinove po ADCSSL registru
+    ADCON2bits.SMPI=1;  // Dizi interrupt na svaki drugi interrupt
+    ADCON2bits.BUFM=0;  // ADC rezultati se zapisuju u veliki 16-word buffer
+    ADCON2bits.ALTS=1;  // Prebacuj izmedju ADC ulaza A i B
 
 
 /*
@@ -137,9 +137,9 @@ bit 5-0 ADCS<5:0>: A/D Conversion Clock Select bits
 	000001 = TCY/2 � (ADCS<5:0> + 1) = TCY
 	000000 = TCY/2 � (ADCS<5:0> + 1) = TCY/2*/
 
-	ADCON3bits.SAMC=31;
-	ADCON3bits.ADRC=1;
-	ADCON3bits.ADCS=31;
+    ADCON3bits.SAMC=31;
+    ADCON3bits.ADRC=1;
+    ADCON3bits.ADCS=31;
 
 /*
 ADCHS: A/D Input Select Register
@@ -161,11 +161,13 @@ bit 4 CH0NA: Channel 0 Negative Input Select for MUX A Multiplexer Setting bit
 	0001 = Channel 0 positive input is AN1
 	0000 = Channel 0 positive input is AN0
 */
-	ADCHSbits.CH0NB=0;
-	ADCHSbits.CH0NA=0;
+    // Niski ulazi su nam masa
+    ADCHSbits.CH0NB=0;
+    ADCHSbits.CH0NA=0;
 
-	ADCHSbits.CH0SA=0;
-	ADCHSbits.CH0SB=0;
+    // Visoki ulazi su pinovi na touchscreenu
+    ADCHSbits.CH0SA=8;
+    ADCHSbits.CH0SB=9;
 
 /*ADPCFG: A/D Port Configuration Register
 
@@ -180,43 +182,47 @@ bit 15-0 PCFG<15:0>: Analog Input Pin Configuration Control bits
 bit 15-0 CSSL<15:0>: A/D Input Pin Scan Selection bits
 	1 = Select ANx for input scan
 	0 = Skip ANx for input scan*/
-	//ADCSSL=0b0001111111111111;
-	ADCSSL=0b0000001100000000;
-	ADCON1bits.ASAM=1;
-
-	IFS0bits.ADIF=1;
-	IEC0bits.ADIE=1;
+    ADCSSL=0b0000001100000000; // Biramo samo touchscreen pinove sa ADC selection
+    ADCON1bits.ASAM=1;
+    
+    IFS0bits.ADIF=1;
+    IEC0bits.ADIE=1;
 }
-
+/**
+ * Svetlosni senzor radi u pullup rezimu
+ * Normalno stanje pina je nizak, ali se pojavi svetlo taj napon se dize
+ * i to koristimo kao okidac za provalu.
+ */
 bool poll_light_sensor(void) {
-    ADCSSL=0b0000000001000000; // iskljuci touchscreen, ukljuci senzor
-	ADCON1bits.ASAM=1;
+    // Podesavamo ADC da radi samo sa senzorom
+    ADCHSbits.CH0SA=6;
+    ADCHSbits.CH0SB=6;
+   	ADCSSL=0b0000000001000000; // ADC mora da gleda SAMO senzor
 
-	IFS0bits.ADIF=1;
-	IEC0bits.ADIE=1;
-    
     // Cekamo ADC da odradi prevod vrednosti
-    // Pulldown otpornik, pullup senzor
-	Delay(500);
-    // iscitaj vrednost i proveri ako je preko granice
-    if(sirovi0 > 1000) {
-        return true;
-    }
-    
-    ADCSSL=0b0000001100000000; // iskljuci senzor, ukljuci touch 
-	ADCON1bits.ASAM=1;
+    Delay(500);
 
-	IFS0bits.ADIF=1;
-	IEC0bits.ADIE=1;
-    
-    return false;
+    // Iscitamo vrednost svetla
+    int vrednost = sirovi0; // sirovi1 isto ovde moze, svejedno je
+ 
+    // Ukljucujemo ADC za touch
+    ADCHSbits.CH0SA=8;
+    ADCHSbits.CH0SB=9;
+    ADCSSL=0b0000001100000000; // ADC gleda touch
+
+    // Ne treba cekati ponovo, jer touch funkcija svakako to radi
+
+    // Proveri da li smo preko granice svetla
+    return vrednost > 1000;
 }
 
 // Prekidna rutina za ADC
 void __attribute__((__interrupt__, no_auto_psv)) _ADCInterrupt(void) {
-	sirovi0=ADCBUF0;//0
-	sirovi1=ADCBUF1;//1
-    
+    // Iscitajmo oba bafera
+    sirovi0=ADCBUF0; // Odgovara ADC ulazu A
+    sirovi1=ADCBUF1; // Odgovara ADC ulazu B
+
+    // Ocitali smo vrednosti, moze sledeca da se prosledi
     IFS0bits.ADIF = 0;
 }
 
