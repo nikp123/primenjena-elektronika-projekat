@@ -19,12 +19,12 @@ void __attribute__((__interrupt__, no_auto_psv)) _U1RXInterrupt(void)
         char newchar = U1RXREG;
         // sacuvaj novi karakter
         rx_input[rx_size++] = newchar;
-        
+
         // u slucaju da neko hoce da provali memoriju
         if(rx_size == 99) {
             rx_done = true;
         }
-        
+
         // u slucaju da nadolazi nova linija
         if(newchar == '\n')
             rx_done = true;
@@ -75,7 +75,7 @@ void uart1_init(void)
 
 void uart1_write(unsigned int data)
 {
-	while(!U1STAbits.TRMT);
+    while(!U1STAbits.TRMT);
 
     if(U1MODEbits.PDSEL == 3)
         U1TXREG = data;
@@ -85,10 +85,11 @@ void uart1_write(unsigned int data)
 
 void uart1_writeln(char *data)
 {
-	while(*data) {
+    while(*data) {
         uart1_write(*data++);
     }
-    uart1_write('\n');
+    uart1_write(0x0D); // CR
+    uart1_write(0x0A); // LF
 }
 
 /***********************************************************************
@@ -99,16 +100,16 @@ void uart1_writeln(char *data)
 ************************************************************************/
 void uart1_write_dec2string(unsigned int data)
 {
-	unsigned char temp;
+    unsigned char temp;
 
-	temp=data/1000;
-	uart1_write(temp+'0');
-	data=data-temp*1000;
-	temp=data/100;
-	uart1_write(temp+'0');
-	data=data-temp*100;
-	temp=data/10;
-	uart1_write(temp+'0');
-	data=data-temp*10;
-	uart1_write(data+'0');
+    temp=data/1000;
+    uart1_write(temp+'0');
+    data=data-temp*1000;
+    temp=data/100;
+    uart1_write(temp+'0');
+    data=data-temp*100;
+    temp=data/10;
+    uart1_write(temp+'0');
+    data=data-temp*10;
+    uart1_write(data+'0');
 }
