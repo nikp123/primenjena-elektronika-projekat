@@ -10,9 +10,13 @@
 					       1/Fosc = 1us !!!, 1us * 1000 = 1ms  */
 
 uint16_t brojac_ms;
+uint8_t brojac_stepper;
 unsigned int sekund;
 
 bool blown = false;
+
+uint8_t millis_timer1;
+bool stepper_engaged;
 
 void timer_init_2(void)
 {
@@ -28,17 +32,23 @@ void timer_init_2(void)
 	T2CONbits.TON = 1; // T2 on 
 }
 
-
 void __attribute__((__interrupt__, no_auto_psv)) _T2Interrupt(void) // svakih 1ms
 {
     TMR2 = 0; // Resetuj brojac
 
     brojac_ms++; // Brojac milisekundi
+    brojac_stepper++;
 
     if (brojac_ms==1000) { // Brojac za sekunde
         brojac_ms=0;
         sekund++;//fleg za sekundu
     }
+    
+    if(brojac_stepper==20) {
+        brojac_stepper = 0;
+    }
+    
+    LATBbits.LATB11 = (stepper_engaged ? (brojac_stepper < 2) : (brojac_stepper < 1));
   
     // Ukoliko je zvucni alarm ukljucen
     // Osciliraj pin A11 (buzzer) brzinom ovog prekida

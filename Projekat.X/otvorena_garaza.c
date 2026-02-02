@@ -103,9 +103,7 @@ bool otvorena_garaza() {
         steper motora na visoku vrednost i cekamo da ta milisekunda prodje.
        - Radimo isto samo za nizak dio periode i nastavimo sa logikom tog stanja
     **/
-    while(timer_ms() % 20) {}; // cekaj periodu
-    while((timer_ms() % 20) < 1) LATBbits.LATB11 = 1; // stvori puls od 1 ms
-    while(timer_ms() % 20)       LATBbits.LATB11 = 0;  // cekaj ostatak periode
+    stepper_engaged = false;
 
     // Da li korisnik zeli da zakljuca garazu
     return touchscreen_touch();

@@ -13,6 +13,8 @@
 
 #include <stdbool.h>
 
+extern bool stepper_engaged;
+
 // Resetuj timer za unos
 void timer_reset();
 
@@ -23,7 +25,7 @@ bool timer_blew();
 // (Korisno zarad dobijanja periode za upravljanje servo motora)
 unsigned int timer_ms();
 
-// Inicijalizacija timera 2 (Timer 1 se ne koristi)
+// Inicijalizacija timera 2
 void timer_init_2(void);
 
 // delay funkcija, vreme nije precizno, blokira kretanje koda

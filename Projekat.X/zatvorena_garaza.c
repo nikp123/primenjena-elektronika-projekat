@@ -82,9 +82,7 @@ void zatvorena_garaza_init() {
 bool zatvorena_garaza() {
     // Isti princip rada kao za otvorenu garazu, samo sa duzom periodom od 2-3ms da bi se
     // servo motor maksimalno rotirao (180 stepeni). To simulira nasu zatvorenu garazu.
-    while(timer_ms() % 20) {}; // cekaj periodu
-    while((timer_ms() % 20) < 3) LATBbits.LATB11 = 1; // stvori puls od 2-3 ms
-    while(timer_ms() % 20)       LATBbits.LATB11 = 0;  // cekaj ostatak periode
+    stepper_engaged = true;
     
     // Da li korisnik zeli da otvori garazu
     return touchscreen_touch();
