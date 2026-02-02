@@ -212,8 +212,11 @@ bool poll_light_sensor(void) {
 
     // Ne treba cekati ponovo, jer touch funkcija svakako to radi
 
+    //uart1_write_dec2string(vrednost);
+    //uart1_writeln(" - citanje sa fotootpornika");
+    
     // Proveri da li smo preko granice svetla
-    return vrednost > 1000;
+    return vrednost > 2000;
 }
 
 // Prekidna rutina za ADC
